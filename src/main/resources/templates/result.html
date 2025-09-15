@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>사주 풀이 결과</title>
+
+    <!-- 깃허브 마크다운 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css">
+
+    <!-- marked.js (마크다운 → HTML 변환) -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Noto Serif KR', serif;
+            background: #fdf6e3;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fffaf0;
+            padding: 30px;
+            border-radius: 12px;
+            border: 2px solid #e0c097;
+        }
+        h1 {
+            text-align: center;
+            color: #8b1e1e;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>사주 풀이 결과</h1>
+
+    <div class="info">
+        <p><strong>이름:</strong> <span th:text="${sajuRequest.name}"></span></p>
+        <p><strong>생년월일:</strong> <span th:text="${sajuRequest.birth}"></span></p>
+        <p><strong>성별:</strong> <span th:text="${sajuRequest.gender}"></span></p>
+        <p><strong>태어난 시각:</strong> <span th:text="${sajuRequest.time}"></span></p>
+        <p><strong>질문:</strong> <span th:text="${sajuRequest.question}"></span></p>
+    </div>
+
+    <!-- GPT 응답 들어갈 영역 -->
+    <div class="markdown-body" id="markdown-content" style="margin-top:20px;"></div>
+
+    <a href="/" style="display:block;text-align:center;margin-top:20px;color:#8b1e1e;text-decoration:none;">다시 입력하기</a>
+</div>
+
+<!-- JS로 GPT 응답 마크다운 렌더링 -->
+<script th:inline="javascript">
+    // 서버에서 받은 GPT 응답 (마크다운 문자열)
+    var answerMarkdown = [[${answer}]];
+
+    // 마크다운 → HTML 변환
+    document.getElementById("markdown-content").innerHTML = marked.parse(answerMarkdown);
+</script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>사주 풀이 입력</title>
+    <style>
+        body {
+            font-family: 'Noto Serif KR', serif;
+            background: #fdf6e3 url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: rgba(255, 250, 240, 0.95);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 2px solid #b43e2f;
+        }
+        h1 {
+            text-align: center;
+            color: #8b1e1e;
+            margin-bottom: 20px;
+            font-size: 26px;
+        }
+        label {
+            font-weight: bold;
+            color: #5c3d2e;
+            display: block;
+            margin-top: 15px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #c08c73;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        textarea {
+            resize: none;
+            height: 100px;
+        }
+        button {
+            width: 100%;
+            background: #b43e2f;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #8b1e1e;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>사주 풀이 입력</h1>
+    <form th:action="@{/saju}" method="post" th:object="${sajuRequest}">
+        <label for="name">이름</label>
+        <input type="text" th:field="*{name}" id="name" placeholder="이름 입력"/>
+
+        <label for="birth">생년월일</label>
+        <input type="text" th:field="*{birth}" id="birth" placeholder="YYYY-MM-DD"/>
+
+        <label for="gender">성별</label>
+        <input type="text" th:field="*{gender}" id="gender" placeholder="남자 / 여자"/>
+
+        <label for="time">태어난 시각(시주)</label>
+        <input type="text" th:field="*{time}" id="time" placeholder="예: 15:30 또는 모름"/>
+
+        <label for="question">질문</label>
+        <textarea th:field="*{question}" id="question" placeholder="궁금한 점을 입력하세요"></textarea>
+
+        <button type="submit">풀이하기</button>
+    </form>
+</div>
+</body>
+</html>
