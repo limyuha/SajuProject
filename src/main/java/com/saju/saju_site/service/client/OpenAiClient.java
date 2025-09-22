@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import reactor.netty.resources.ConnectionProvider;
 
 import java.time.Duration;
 import java.util.List;
@@ -25,7 +26,15 @@ public class OpenAiClient {
             @Value("${openai.url}") String url,
             @Value("${openai.model}") String model) {
 
-        HttpClient httpClient = HttpClient.create()
+        // 커넥션 풀 설정
+        ConnectionProvider provider = ConnectionProvider.builder("custom")
+                .maxConnections(100) // 동시 최대 연결 수
+                .maxIdleTime(Duration.ofSeconds(30)) // 유휴 커넥션은 30초만 유지
+                .maxLifeTime(Duration.ofMinutes(2))  // 커넥션 전체 수명 제한
+                .build();
+
+        // HttpClient에 provider 적용
+        HttpClient httpClient = HttpClient.create(provider)
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000)   // 연결 시도 10초
                 .responseTimeout(Duration.ofSeconds(30))               // 응답 대기 30초
                 .doOnConnected(conn ->
